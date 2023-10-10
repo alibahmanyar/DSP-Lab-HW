@@ -8,7 +8,7 @@ A = 5;
 f = 1;
 y = A*sin(2*pi*f*t); % Sine function
 
-% Plotting the signals
+% Plotting signals
 figure('Name', 'Sine signal (Plot)');
 plot(t, y, 'LineWidth', 1.5);
 xlabel('Time (s)');
@@ -28,7 +28,7 @@ grid on;
 r = rand(1, length(y)) - 0.5; % Noise
 noised_signal = y + r; % Add noise to sine
 
-% Plotting the signals
+% Plotting signals
 figure('Name', 'Normal Sine signal VS Noisy Sine Signal');
 subplot(2,1,1);
 plot(t,y)
@@ -41,7 +41,7 @@ hold on;
 % part 1.3:
 M1 = 0;
 M2 = 20;
-len = M2 - M1 + 1; % Window length
+len = M2 + M1 + 1; % Window length
 
 window = ones(1, len) / len; % Moving average window
 
@@ -49,6 +49,21 @@ y2 = conv(noised_signal, window);
 t2 = 0:0.01:(0.01 * (length(y2) - 1));
 
 plot(t2, y2);
+
+
+% part 1.3.2:
+M1 = 10;
+M2 = 10;
+len = M2 + M1 + 1; % Window length
+
+window = ones(1, len) / len; % Moving average window
+
+y3 = conv(noised_signal(M1:end), window);
+t3 = 0:0.01:(0.01 * (length(y3) - 1));
+
+plot(t3, y3);
+
+legend("Noisy Signal", "Moving Avg M1=0, M2=20", "Moving Avg M1=10, M2=10");
 
 
 
