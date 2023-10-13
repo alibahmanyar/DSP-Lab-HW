@@ -47,6 +47,8 @@ hold off;
 
 %% part 3
 % part 1.3:
+% A moving average filter introduces a delay because it computes the average of past data points, which inherently involves looking back in time, causing the output to lag behind the input signal.
+
 M1 = 0;
 M2 = 20;
 len = M2 + M1 + 1; % Window length
