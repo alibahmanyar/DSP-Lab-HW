@@ -116,7 +116,7 @@ title('output signal of filter function');xlabel('Time (Second)');ylabel('Signal
 
 %% part 5
 % part 1.5
-w0 = pi/4; n = 101;
+w0 = pi/32; n = 100;
 [y5,t5] = singen(w0,n);     %singen function is defined in singen.m
 figure('Name', 'singen');
 stem(t5,y5, '.')

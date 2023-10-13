@@ -1,8 +1,11 @@
 function [y,t] = singen(w,n)
-    for i = 1:n
-        y(i) = sin(w*(i-2));
-    end
+    b = [0 sin(w)];
+    a = [1 -2*cos(w) 1];
     
-    t = -1:(n-2);
+    x = zeros(n);
+    x(1) = 1;
+    y = filter(b, a, x);
+    
+    t = 1:n;
 end
 
