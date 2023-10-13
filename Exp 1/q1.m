@@ -30,7 +30,7 @@ r = rand(1, length(y)) - 0.5; % Noise
 noised_signal = y + r;        % Add noise to sine, y defined in section 1.1
 
 % Plotting signals
-figure('Name', 'Normal Sine signal VS Noisy Sine Signal');
+figure('Name', 'Normal Sine signal VS Noisy Sine Signal', 'Position', [300 200 700 500]);
 subplot(3,1,1);               % Plotting normal signal without noise
 plot(t,y)
 title('Normal Signal');xlabel('Time (Second)');ylabel('Signal Amplitude');
@@ -56,7 +56,11 @@ window = ones(1, len) / len; % Moving average window
 y2 = conv(noised_signal, window);
 t2 = 0:0.01:(0.01 * (length(y2) - 1));
 
-plot(t2, y2);
+% Plotting section 1.3.1
+figure('Name', 'Moving Avg signals', 'Position', [300 200 700 500]);
+hold on;
+plot(t,noised_signal);              % Noise signal
+plot(t2, y2);                       % Moving Avg M1=0, M2=20
 
 % part 1.3.2:
 M1 = 10;
@@ -68,7 +72,9 @@ window = ones(1, len) / len; % Moving average window
 y3 = conv(noised_signal(M1:end), window);
 t3 = 0:0.01:(0.01 * (length(y3) - 1));
 
-plot(t3, y3);
+plot(t3, y3);                       % Moving Avg M1=0, M2=20
+hold off;
+title('Three signals together'); xlabel('Time (Second)'); ylabel('Signal Amplitude');
 legend("Noisy Signal", "Moving Avg M1=0, M2=20", "Moving Avg M1=10, M2=10");
 
 %%
