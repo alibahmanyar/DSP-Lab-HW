@@ -194,6 +194,29 @@ for sr=[4 5 10 20] % sr: sampling rate
     title(sprintf('Spectrum of sampled signal sr=%d', sr));xlabel('Frequency (Hz)');ylabel('Amplitude');
 end
 
+%Plotting all plots in single figure
+figure('Name', 'all original and sampled spectrums combined', 'Position', [50 200 1400 500]');
+counter = 1;       % counter for plotting in subplots
+for sr=[4 5 10 20] % sr: sampling rate
+    % Keep every fs/sr sample, other samples are set to 0
+    % This way, the length of y will remain the same
+    y7_2 = zeros(1, length(y7));
+    y7_2(1:fs/sr:end) = y7(1:fs/sr:end); 
+
+    % Spectrum of sampled singal
+    FT_x_1 = (1 / fs) * abs(fftshift(fft(y7_2)));
+    f_axis_1 = linspace(-fs / 2, fs / 2, length(FT_x_1));
+    
+    subplot(2, 4, counter)
+    plot(f_axis_0, abs(FT_x_0), 'LineWidth', 1.5);
+    title('Spectrum of original signal');xlabel('Frequency (Hz)');ylabel('Amplitude');
+
+    subplot(2, 4, counter + 4)
+    plot(f_axis_1, abs(FT_x_1), 'LineWidth', 1.5);
+    title(sprintf('Spectrum of sampled signal sr=%d', sr));xlabel('Frequency (Hz)');ylabel('Amplitude');
+    counter = counter + 1;
+end
+clear counter;
 %% part 8
 close all;
 clear;
