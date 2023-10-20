@@ -147,3 +147,40 @@ stem(t62,y62);
 
 %plot(t8,y8)
 
+%% part 7
+close all;
+clear;
+clc;
+
+fs = 100;
+t7 = -5:1/fs:5;
+y7 = sinc(5*t7) .^ 2;
+
+% Spectrum of original singal
+FT_x_0 = (1 / fs) * abs(fftshift(fft(y7)));
+f_axis_0 = linspace(-fs / 2, fs / 2, length(FT_x_0));
+
+
+for sr=[4 5 10 20] % sr: sampling rate
+    figure('Name', 'Spectrum of original vs sampled signal');
+    
+    % Keep every fs/sr sample, other samples are set to 0
+    % This way, the length of y will remain the same
+    y7_2 = zeros(1, length(y7));
+    y7_2(1:fs/sr:end) = y7(1:fs/sr:end); 
+
+
+    % Spectrum of sampled singal
+    FT_x_1 = (1 / fs) * abs(fftshift(fft(y7_2)));
+    f_axis_1 = linspace(-fs / 2, fs / 2, length(FT_x_1));
+
+    subplot(2,1,1)
+    plot(f_axis_0, abs(FT_x_0), 'LineWidth', 1.5);
+    title('Spectrum of original signal');xlabel('Frequency (Hz)');ylabel('Amplitude');
+
+    subplot(2,1,2)
+    plot(f_axis_1, abs(FT_x_1), 'LineWidth', 1.5);
+    title(sprintf('Spectrum of sampled signal sr=%d', sr));xlabel('Frequency (Hz)');ylabel('Amplitude');
+end
+
+
