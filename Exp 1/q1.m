@@ -249,14 +249,14 @@ clear;
 clc;
 
 % Constructing the signal
-f = [pi/16 5*pi/16 9*pi/16 13*pi/16];
+f = [pi/16 5/16 9/16 13/16];
 
 fs = 1e3;
 t9 = 1:1/fs:100;
 y9 = zeros(1, length(t9));
 
 for f1=f
-    y9 = y9 + cos(2*f1*t9);
+    y9 = y9 + cos(2 * pi * f1 * t9);    
 end
 
 
@@ -266,7 +266,7 @@ FT_y9 = (1/fs) * abs(fftshift(fft(y9)));
 f_axis = linspace(-fs / 2, fs / 2, length(FT_y9));
 plot(f_axis,FT_y9, 'LineWidth', 2)
 xlim([-1,1])
-title('Spectrum'); xlabel('Freq');ylabel('Amplitude');
+title('Spectrum of original signal'); xlabel('Frequency(Hz)');ylabel('Amplitude(Volt/sec)');
 
 
 % Loading filters coefficients from xls file
@@ -286,7 +286,7 @@ for i = 1:4
 
     plot(w, abs(h));
     title(sprintf('Frequency response of analysis filter %d', i));
-    xlabel('Normalized Frequency');ylabel('Amplitude');
+    xlabel('Normalized Frequency(Hz)');ylabel('Amplitude(Volt/sec)');
 end
 
 for i = 1:4
@@ -297,7 +297,7 @@ for i = 1:4
     
     plot(w, abs(h));
     title(sprintf('Frequency response of synthesis filter %d', i));
-    xlabel('Normalized Frequency');ylabel('Amplitude');
+    xlabel('Normalized Frequency(Hz)');ylabel('Amplitude(Volt/sec)');
 end
 
 % Plotting phase of frequency responses
@@ -343,8 +343,15 @@ y_out =   conv(upsample(2*a, 4), filter_coef_2(1, :), 'same') ...
 % Plotting the spectrum of the processed signal
 figure('Name', 'Spectrum of processed signal');
 FT_yout = (1/fs) * abs(fftshift(fft(y_out)));
-f_axis = linspace(-fs / 2, fs / 2, length(FT_yout));
-plot(f_axis,FT_yout, 'LineWidth', 2)
+f_axis_out = linspace(-fs / 2, fs / 2, length(FT_yout));
+plot(f_axis_out,FT_yout, 'LineWidth', 2)
 xlim([-1,1])
 title('Spectrum');xlabel('Freq');ylabel('Amplitude');
 
+figure('Name', 'Spectrum of Both signals');
+hold on;
+plot(f_axis, FT_y9, '--r', 'LineWidth', 1)
+plot(f_axis_out, FT_yout, '-k', 'LineWidth', 0.5)
+xlim([-1,1])
+title('Spectrum');xlabel('Freq');ylabel('Amplitude'); grid on;
+hold off;
