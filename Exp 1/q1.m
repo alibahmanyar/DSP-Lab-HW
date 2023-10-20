@@ -158,6 +158,14 @@ plot(t63,smoothed_signal)
 
 legend('Original Signal', 'Downsampled Signal', 'Reconstructed Signal')
 
+%%%%%%%%%%%%%%%%%%%%% QUESTION %%%%%%%%%%%%%%%%%%%%%%%%%
+% Q: What is the effect of limiting the length of the ideal filter on the reconstructed signal?
+% A: By downsampling a signal and passing it through a lowpass filter, 
+%    the reconstruction is a smoother version of the original signal with frequencies limited by the Nyquist theorem (half the new sampling rate). 
+%    The filter length affects the trade-off between preserving signal details and avoiding artifacts, with longer filters allowing more low-frequency 
+%    retention but potentially introducing time-domain artifacts.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %% part 7
 close all;
 clear;
@@ -217,6 +225,9 @@ for sr=[4 5 10 20] % sr: sampling rate
     counter = counter + 1;
 end
 clear counter;
+%%%%%%%%%%%%%%%%%%%%% QUESTION %%%%%%%%%%%%%%%%%%%%%%%%%
+% The difference is in the sampled signal is repeated through frequency
+
 %% part 8
 close all;
 clear;
