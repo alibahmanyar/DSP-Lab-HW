@@ -201,7 +201,7 @@ for f1=f
 end
 
 
-% Plottign the spectrum of the original signal
+% Plotting the spectrum of the original signal
 figure('Name', 'Spectrum of original signal');
 FT_y9 = (1/fs) * abs(fftshift(fft(y9)));
 f_axis = linspace(-fs / 2, fs / 2, length(FT_y9));
@@ -265,3 +265,27 @@ for i = 1:4
     title(sprintf('Frequency response of synthesis filter %d', i));
     xlabel('Normalized Frequency');ylabel('Phase');
 end
+
+
+a = downsample(conv(filter_coef_1(1, :), y9), 4);
+b = downsample(conv(filter_coef_1(2, :), y9), 4);
+c = downsample(conv(filter_coef_1(3, :), y9), 4);
+d = downsample(conv(filter_coef_1(4, :), y9), 4);
+
+y_out =   conv(filter_coef_2(1, :), upsample(2*a, 4)) ...
+        + conv(filter_coef_2(3, :), upsample(c, 4))   ...
+        + conv(filter_coef_2(4, :), upsample(0.5*d, 4));
+
+% figure()
+% plot(y_out)
+% figure('Name', 'y9')
+% plot(y9)
+
+% Plotting the spectrum of the processed signal
+figure('Name', 'Spectrum of processed signal');
+FT_yout = (1/fs) * abs(fftshift(fft(y_out)));
+f_axis = linspace(-fs / 2, fs / 2, length(FT_yout));
+plot(f_axis,FT_yout, 'LineWidth', 2)
+xlim([-1,1])
+title('Spectrum'); xlabel('Freq');ylabel('Amplitude');
+
