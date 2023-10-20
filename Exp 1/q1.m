@@ -277,14 +277,14 @@ for i = 1:4
 end
 
 
-a = downsample(conv(filter_coef_1(1, :), y9), 4);
-b = downsample(conv(filter_coef_1(2, :), y9), 4);
-c = downsample(conv(filter_coef_1(3, :), y9), 4);
-d = downsample(conv(filter_coef_1(4, :), y9), 4);
+a = downsample(conv(y9, filter_coef_1(1, :), 'same'), 4);
+b = downsample(conv(y9, filter_coef_1(2, :), 'same'), 4);
+c = downsample(conv(y9, filter_coef_1(3, :), 'same'), 4);
+d = downsample(conv(y9, filter_coef_1(4, :), 'same'), 4);
 
-y_out =   conv(filter_coef_2(1, :), upsample(2*a, 4)) ...
-        + conv(filter_coef_2(3, :), upsample(c, 4))   ...
-        + conv(filter_coef_2(4, :), upsample(0.5*d, 4));
+y_out =   conv(upsample(2*a, 4), filter_coef_2(1, :), 'same') ...
+        + conv(upsample(c, 4), filter_coef_2(3, :), 'same')   ...
+        + conv(upsample(0.5*d, 4), filter_coef_2(4, :), 'same');
 
 % figure()
 % plot(y_out)
