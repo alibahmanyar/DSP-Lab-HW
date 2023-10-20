@@ -289,7 +289,8 @@ FT_y9 = (1/fs) * abs(fftshift(fft(y9)));
 f_axis = linspace(-fs / 2, fs / 2, length(FT_y9));
 plot(f_axis,FT_y9, 'LineWidth', 2)
 xlim([-1,1])
-title('Spectrum of original signal'); xlabel('Frequency(Hz)');ylabel('Amplitude(Volt/sec)');
+title('Spectrum of original signal'); xlabel('Frequency(Hz)');ylabel('Amplitude(Volt/sec)'); 
+grid on;
 
 
 % Loading filters coefficients from xls file
@@ -310,6 +311,7 @@ for i = 1:4
     plot(w, abs(h));
     title(sprintf('Frequency response of analysis filter %d', i));
     xlabel('Normalized Frequency(Hz)');ylabel('Amplitude(Volt/sec)');
+    grid on;
 end
 
 for i = 1:4
@@ -321,6 +323,7 @@ for i = 1:4
     plot(w, abs(h));
     title(sprintf('Frequency response of synthesis filter %d', i));
     xlabel('Normalized Frequency(Hz)');ylabel('Amplitude(Volt/sec)');
+    grid on;
 end
 
 % Plotting phase of frequency responses
@@ -335,6 +338,7 @@ for i = 1:4
     plot(w, (angle(h)));
     title(sprintf('Frequency response of analysis filter %d', i));
     xlabel('Normalized Frequency');ylabel('Phase');
+    grid on;
 end
 
 for i = 1:4
@@ -346,6 +350,7 @@ for i = 1:4
     plot(w, (angle(h)));
     title(sprintf('Frequency response of synthesis filter %d', i));
     xlabel('Normalized Frequency');ylabel('Phase');
+    grid on;
 end
 
 
@@ -370,11 +375,13 @@ f_axis_out = linspace(-fs / 2, fs / 2, length(FT_yout));
 plot(f_axis_out,FT_yout, 'LineWidth', 2)
 xlim([-1,1])
 title('Spectrum');xlabel('Freq');ylabel('Amplitude');
+grid on;
 
 figure('Name', 'Spectrum of Both signals');
 hold on;
 plot(f_axis, FT_y9, '--r', 'LineWidth', 1)
 plot(f_axis_out, FT_yout, '-k', 'LineWidth', 0.5)
 xlim([-1,1])
-title('Spectrum');xlabel('Freq');ylabel('Amplitude'); grid on;
+title('Spectrum');xlabel('Freq');ylabel('Amplitude');
+grid on;
 hold off;
