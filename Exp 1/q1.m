@@ -130,7 +130,7 @@ close all;
 clear;
 clc;
 
-figure('Name', 'cos(2*pi*t6) + cos(8*pi*t6) + cos(12*pi*t6)');
+figure('Name', 'cos(2*pi*t) + cos(8*pi*t) + cos(12*pi*t)');
 t6 = 0:0.01:4;
 y6 = cos(2*pi*t6) + cos(8*pi*t6) + cos(12*pi*t6); %Original Signal
 plot(t6,y6);
@@ -141,11 +141,22 @@ t62 = 0:0.2:4; % 5khz => 0.0002s = 0.2ms
 y62 = cos(2*pi*t62) + cos(8*pi*t62) + cos(12*pi*t62); %Same signal, 5Khz sampled time vector
 stem(t62,y62);
 
-%figure()
-%y8 = idealfilter()
-%t8 = 0:0.01:(0.01*(length(y8)-1));
 
-%plot(t8,y8)
+cutoff_frequency = 0.05;
+filter_order = 30; 
+
+% Design the filter using the fir1 function
+filter_coefficients = fir1(filter_order, cutoff_frequency) * 14;
+
+% Applying the filter to the downsampled signal
+y62 = upsample(y62, 20);
+smoothed_signal = conv(y62, filter_coefficients, 'same');
+
+% Plotting the reconstructed signal
+t8 = 0:0.01:(0.01*(length(smoothed_signal)-1));
+plot(t8,smoothed_signal)
+
+legend('Original Signal', 'Downsampled Signal', 'Reconstructed Signal')
 
 %% part 7
 close all;
@@ -182,7 +193,6 @@ for sr=[4 5 10 20] % sr: sampling rate
     plot(f_axis_1, abs(FT_x_1), 'LineWidth', 1.5);
     title(sprintf('Spectrum of sampled signal sr=%d', sr));xlabel('Frequency (Hz)');ylabel('Amplitude');
 end
-
 
 %% part 9
 close all;
@@ -287,5 +297,5 @@ FT_yout = (1/fs) * abs(fftshift(fft(y_out)));
 f_axis = linspace(-fs / 2, fs / 2, length(FT_yout));
 plot(f_axis,FT_yout, 'LineWidth', 2)
 xlim([-1,1])
-title('Spectrum'); xlabel('Freq');ylabel('Amplitude');
+title('Spectrum');xlabel('Freq');ylabel('Amplitude');
 
