@@ -123,3 +123,27 @@ w0 = pi/32; n = 100;
 figure('Name', 'singen');
 stem(t5,y5, '.')
 title('singen function output');xlabel('Time (Second)');ylabel('Signal Amplitude');
+
+
+%% part 6
+close all;
+clear;
+clc;
+
+figure('Name', 'cos(2*pi*t6) + cos(8*pi*t6) + cos(12*pi*t6)');
+t6 = 0:0.01:4;
+y6 = cos(2*pi*t6) + cos(8*pi*t6) + cos(12*pi*t6); %Original Signal
+plot(t6,y6);
+title('cos(2*pi*t6) + cos(8*pi*t6) + cos(12*pi*t6)');xlabel('Time (Milisecond)');ylabel('Signal Amplitude');
+hold on;
+
+t62 = 0:0.2:4; % 5khz => 0.0002s = 0.2ms
+y62 = cos(2*pi*t62) + cos(8*pi*t62) + cos(12*pi*t62); %Same signal, 5Khz sampled time vector
+stem(t62,y62);
+
+%figure()
+%y8 = idealfilter()
+%t8 = 0:0.01:(0.01*(length(y8)-1));
+
+%plot(t8,y8)
+
