@@ -189,6 +189,7 @@ close all;
 clear;
 clc;
 
+% Constructing the signal
 f = [pi/16 5*pi/16 9*pi/16 13*pi/16];
 
 fs = 1e3;
@@ -199,8 +200,8 @@ for f1=f
     y9 = y9 + cos(2*f1*t9);
 end
 
-plot(t9,y9);
 
+% Plottign the spectrum of the original signal
 figure('Name', 'Spectrum of original signal');
 FT_y9 = (1/fs) * abs(fftshift(fft(y9)));
 f_axis = linspace(-fs / 2, fs / 2, length(FT_y9));
@@ -215,7 +216,7 @@ filter_coef_2 = readmatrix('filters.xls', 'Sheet', 2);
 
 
 
-% Plotting 
+% Plotting amplitude of frequency responses
 figure('Name', 'Frequency response of filters');
 
 for i = 1:4
@@ -240,7 +241,7 @@ for i = 1:4
     xlabel('Normalized Frequency');ylabel('Amplitude');
 end
 
-
+% Plotting phase of frequency responses
 figure('Name', 'Phase response of filters');
 
 for i = 1:4
