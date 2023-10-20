@@ -209,5 +209,58 @@ xlim([-1,1])
 title('Spectrum'); xlabel('Freq');ylabel('Amplitude');
 
 
-filter_coef = readmatrix('filters.xls', 'Sheet', 1);
+% Loading filters coefficients from xls file
+filter_coef_1 = readmatrix('filters.xls', 'Sheet', 1);
+filter_coef_2 = readmatrix('filters.xls', 'Sheet', 2);
 
+
+
+% Plotting 
+figure('Name', 'Frequency response of filters');
+
+for i = 1:4
+    subplot(4,2, 2*i-1)
+    
+    [h, w] = freqz(filter_coef_1(i, :));
+    w = w ./ pi;
+
+    plot(w, abs(h));
+    title(sprintf('Frequency response of analysis filter %d', i));
+    xlabel('Normalized Frequency');ylabel('Amplitude');
+end
+
+for i = 1:4
+    subplot(4,2,2*i)
+    
+    [h, w] = freqz(filter_coef_2(i, :));
+    w = w ./ pi;
+    
+    plot(w, abs(h));
+    title(sprintf('Frequency response of synthesis filter %d', i));
+    xlabel('Normalized Frequency');ylabel('Amplitude');
+end
+
+
+figure('Name', 'Phase response of filters');
+
+for i = 1:4
+    subplot(4,2, 2*i-1)
+    
+    [h, w] = freqz(filter_coef_1(i, :));
+    w = w ./ pi;
+    
+    plot(w, (angle(h)));
+    title(sprintf('Frequency response of analysis filter %d', i));
+    xlabel('Normalized Frequency');ylabel('Phase');
+end
+
+for i = 1:4
+    subplot(4,2,2*i)
+    
+    [h, w] = freqz(filter_coef_2(i, :));
+    w = w ./ pi;
+    
+    plot(w, (angle(h)));
+    title(sprintf('Frequency response of synthesis filter %d', i));
+    xlabel('Normalized Frequency');ylabel('Phase');
+end
