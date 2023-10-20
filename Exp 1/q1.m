@@ -153,8 +153,8 @@ y62 = upsample(y62, 20);
 smoothed_signal = conv(y62, filter_coefficients, 'same');
 
 % Plotting the reconstructed signal
-t8 = 0:0.01:(0.01*(length(smoothed_signal)-1));
-plot(t8,smoothed_signal)
+t63 = 0:0.01:(0.01*(length(smoothed_signal)-1));
+plot(t63,smoothed_signal)
 
 legend('Original Signal', 'Downsampled Signal', 'Reconstructed Signal')
 
@@ -193,6 +193,55 @@ for sr=[4 5 10 20] % sr: sampling rate
     plot(f_axis_1, abs(FT_x_1), 'LineWidth', 1.5);
     title(sprintf('Spectrum of sampled signal sr=%d', sr));xlabel('Frequency (Hz)');ylabel('Amplitude');
 end
+
+%% part 8
+close all;
+clear;
+clc;
+
+fs = 256 / 10;
+t8 = -5 : 1/fs : 5 - (1/fs);
+y8 = sinc(2*t8);
+
+FT_x = (1 / fs) * abs(fftshift(fft(y8)));
+f_axis = linspace(-pi, pi, length(FT_x));
+
+
+for ratio = [0.5, 3, 1.5]
+    fs1 = ratio * fs;
+
+    % Constructing the sampled signal
+    t8_1 = -5 : 1/fs1 : 5 - (1/fs1);
+    y8_1 = sinc(2*t8_1);
+
+    FT_x_1 = (1 / fs1) * abs(fftshift(fft(y8_1)));
+    f_axis_1 = linspace(-pi, pi, length(FT_x_1));
+
+    
+    % Plotting the signals and spectrums
+    figure('Name', sprintf('Sampling of sinc(2t) ratio=%d', ratio));
+    
+    subplot(2,2,1);
+    plot(f_axis, abs(FT_x), 'LineWidth', 1.5);
+    title('Spectrum of original signal');xlabel('Frequency (Hz)');ylabel('Amplitude');
+    set(gca,'XTick',-pi:pi/2:pi) 
+    set(gca,'XTickLabel',{'-pi', 'pi/2', '0' ,'pi/2','pi'})
+
+    subplot(2,2,2);
+    plot(f_axis_1, abs(FT_x_1), 'LineWidth', 1.5);
+    title('Spectrum of sampled signal');xlabel('Frequency (Hz)');ylabel('Amplitude');
+    set(gca,'XTick',-pi:pi/2:pi) 
+    set(gca,'XTickLabel',{'-pi', 'pi/2', '0' ,'pi/2','pi'})
+
+    subplot(2,2,3);
+    plot(t8, y8, 'LineWidth', 1.5);
+    title('Original signal');xlabel('Time');ylabel('Amplitude');
+
+    subplot(2,2,4);
+    plot(t8_1, y8_1, 'LineWidth', 1.5);
+    title('Sampled signal');xlabel('Time');ylabel('Amplitude');
+end
+
 
 %% part 9
 close all;
