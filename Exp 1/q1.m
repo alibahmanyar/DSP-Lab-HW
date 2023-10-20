@@ -184,3 +184,30 @@ for sr=[4 5 10 20] % sr: sampling rate
 end
 
 
+%% part 9
+close all;
+clear;
+clc;
+
+f = [pi/16 5*pi/16 9*pi/16 13*pi/16];
+
+fs = 1e3;
+t9 = 1:1/fs:100;
+y9 = zeros(1, length(t9));
+
+for f1=f
+    y9 = y9 + cos(2*f1*t9);
+end
+
+plot(t9,y9);
+
+figure('Name', 'Spectrum of original signal');
+FT_y9 = (1/fs) * abs(fftshift(fft(y9)));
+f_axis = linspace(-fs / 2, fs / 2, length(FT_y9));
+plot(f_axis,FT_y9, 'LineWidth', 2)
+xlim([-1,1])
+title('Spectrum'); xlabel('Freq');ylabel('Amplitude');
+
+
+filter_coef = readmatrix('filters.xls', 'Sheet', 1);
+
