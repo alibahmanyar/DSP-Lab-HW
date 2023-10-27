@@ -38,6 +38,36 @@ title('Output Signal') ;
 grid on ;
 
 
+%% 2.1.c
+n = 0:14;
+h2 = 0.25 * 0.75.^n;
+y = myconv(h2, x);
+
+figure('Name', 'Filter Convolution');
+subplot(3,1,1);
+stem(n, h2);
+xlabel('n') ;
+ylabel('h[n]') ;
+title('Filter') ;
+grid on ;
+
+subplot(3,1,2);
+stem(0:length(x) - 1, x);
+xlabel('n') ;
+ylabel('x[n]') ;
+title('Input Signal') ;
+xlim([0,200]);
+grid on ;
+
+subplot(3,1,3);
+stem(0:length(y) - 1, y);
+xlabel('n') ;
+ylabel('y[n]') ;
+title('Output Signal') ;
+xlim([0,200]);
+grid on ;
+
+
 %% 2.1.a
 function y = myconv(h,x)
     M = length(h);
