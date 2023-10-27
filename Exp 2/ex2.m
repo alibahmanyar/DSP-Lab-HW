@@ -68,6 +68,36 @@ xlim([0,200]);
 grid on ;
 
 
+%% 2.1.d
+% (0.2 (z^5 δ(n) - 5 z^4 δ(n) + 10 z^3 δ(n) - 10 z^2 δ(n) + 5 z δ(n) - δ(n)))/z^5
+h3 = 0.2*[1,-5,10,-10,5,-1];
+y = myconv(h3, x);
+
+figure('Name', 'Filter Convolution');
+subplot(3,1,1);
+stem(h3);
+xlabel('n') ;
+ylabel('h[n]') ;
+title('Filter') ;
+grid on ;
+
+subplot(3,1,2);
+stem(0:length(x) - 1, x);
+xlabel('n') ;
+ylabel('x[n]') ;
+title('Input Signal') ;
+xlim([0,200]);
+grid on ;
+
+subplot(3,1,3);
+stem(0:length(y) - 1, y);
+xlabel('n') ;
+ylabel('y[n]') ;
+title('Output Signal') ;
+xlim([0,200]);
+grid on ;
+
+
 %% 2.1.a
 function y = myconv(h,x)
     M = length(h);
