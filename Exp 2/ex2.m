@@ -97,4 +97,28 @@ title('Output Signal') ;
 xlim([0,200]);
 grid on ;
 
+%% 2.2.a
+M  = 100;
+n  = 0 : M - 1;
+w1 = 0.05 * pi;
+w2 = 0.20 * pi;
+w3 = 0.35 * pi;
+wa = 0.15 * pi;
+wb = 0.25 * pi;
+
+s  = sin(w2 * n);
+v  = sin(w1 * n) + sin (w3 * n);
+x  = s + v;
+
+w  = 0.54 - 0.46 * sin(2 * pi * n / M);
+h  = w .* ( wb * sinc(wb * (n - M/2)/pi)/pi - wa * sinc(wa * (n - M/2)/pi)/pi );
+
+figure('Name', 'desired and final signal with noise');
+subplot(2,1,1);
+stem(n, x,'g');
+title('X[n]'); xlabel('n'); ylabel(''); grid on;
+
+subplot(2,1,2);
+stem(n, s,'m');
+title('S[n]'); xlabel('n'); ylabel(''); grid on;
 
