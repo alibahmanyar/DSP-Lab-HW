@@ -98,6 +98,8 @@ xlim([0,200]);
 grid on ;
 
 %% 2.2.a
+
+% Defining input variables 
 M  = 100;
 n  = 0 : M - 1;
 w1 = 0.05 * pi;
@@ -123,6 +125,8 @@ stem(n, s,'m');
 title('S[n]'); xlabel('n'); ylabel(''); grid on;
 
 %% 2.2.b
+
+% Defining input variables 
 M  = 100;
 n  = 0 : M - 1;
 w1 = 0.05 * pi;
@@ -150,3 +154,33 @@ stem(n, y,'k');
 title('Y[n]'); xlabel('n'); ylabel(''); grid on;
 
 %% 2.2.c
+
+% Defining input variables 
+M  = 100;
+n  = 0 : M - 1;
+w1 = 0.05 * pi;
+w2 = 0.20 * pi;
+w3 = 0.35 * pi;
+wa = 0.15 * pi;
+wb = 0.25 * pi;
+
+s  = sin(w2 * n);
+v  = sin(w1 * n) + sin (w3 * n);
+x  = s + v;
+
+w  = 0.54 - 0.46 * sin(2 * pi * n / M);
+h  = w .* ( wb * sinc(wb * (n - M/2)/pi)/pi - wa * sinc(wa * (n - M/2)/pi)/pi );
+
+% Loading filter
+load('Filter1.mat');
+y = filter(Num,1,x);
+
+% ploting input and output signals
+figure(6);
+subplot(2,1,1);
+stem(n, s,'g');
+title('S[n]'); xlabel('n'); ylabel(''); grid on;
+
+subplot(2,1,2);
+stem(n, y,'b');
+title('Y[n]'); xlabel('n'); ylabel(''); grid on;
