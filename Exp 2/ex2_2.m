@@ -6,28 +6,9 @@ clc;
 %% 2.3.a
 % Loading the audio file
 [x, Fs] = audioread('Audio01.wav');
-T = 10;
-t = 0: 1/Fs:T-1/Fs;
-
-% Constructing the FFT spectrum of the signal
-L = length(x);
-f_x = (Fs/L) * (-L/2:L/2-1);
-fft_x = fftshift(fft(x))/L;
 
 % Plotting signal in time and freq domain
-figure('Name', 'Original audio signal');
-subplot(2, 1, 1);
-plot(t, x, 'LineWidth', 1.5);
-grid on;
-xlabel('Time(Sec)') ;
-ylabel('Amplitude') ;
-title('Signal in Time Domain');
-subplot(2,1,2) ;
-plot(f_x, abs(fft_x), 'LineWidth',1.5) ;
-grid on;
-xlabel('freq (Hz)');
-ylabel('Amplitude');
-title('Signal in Frequency Domain');
+plot_time_freq(x, Fs, 'Original audio signal', 'Signal in Time Domain', 'Signal in Frequency Domain');
 
 % Playing the audio
 sound(x, Fs);
@@ -36,30 +17,22 @@ pause(length(x) * (1/ Fs));
 %% 2.3.b
 load('filter.mat');
 
-freqz(Num); % Visualising filter freq-phase response
-y_0 = filter(Num,1,x);
-
-% Constructing the FFT spectrum of the signal
-L_y_0 = length(y_0);
-f_y_0 = (Fs/L_y_0) * (-L_y_0/2:L_y_0/2-1);
-fft_y_0 = fftshift(fft(y_0))/L_y_0;
-
-% Plotting signal in time and freq domain
-figure('Name', 'Filtered audio signal');
-subplot(2, 1, 1);
-plot(t, y_0, 'LineWidth', 1.5);
+% Plotting filter in time domain
+figure('Name', 'Time Domain Representation of Filter');
+stem(Num, 'LineWidth', 1.5);
 grid on;
 xlabel('Time(Sec)') ;
 ylabel('Amplitude') ;
-title('Signal in Time Domain');
-subplot(2,1,2) ;
-plot(f_y_0, abs(fft_y_0), 'LineWidth',1.5) ;
-grid on;
-xlabel('freq (Hz)');
-ylabel('Amplitude');
-title('Signal in Frequency Domain');
+title('Time Domain Representation of Filter');
+
+figure('Name', 'Filter freq-phase response');
+freqz(Num); % Visualising filter freq-phase response
+
+y_0 = filter(Num,1,x); % Applying filter
 
 
+% Plotting signal in time and freq domain
+plot_time_freq(y_0, Fs, 'Filtered audio signal', 'Filtered Signal in Time Domain', 'Filtered Signal in Frequency Domain');
 %% 2.3.c
 f0 = 10000;
 n   = 1:length(x);
@@ -68,56 +41,22 @@ s_n = 2*cos(2*pi*f0*n/Fs);
 y_1 = y_0 .* s_n';
 y_2 = filter(Num,1,y_1);
 
-% Constructing the FFT spectrum of the signal
-L_y_2 = length(y_2);
-f_y_2 = (Fs/L_y_2) * (-L_y_2/2:L_y_2/2-1);
-fft_y_2 = fftshift(fft(y_2))/L_y_2;
-
-% Plotting signal in time and freq domain
-figure('Name', 'Modulated audio signal');
-subplot(2, 1, 1);
-plot(t, y_2, 'LineWidth', 1.5);
-grid on;
-xlabel('Time(Sec)') ;
-ylabel('Amplitude') ;
-title('Signal in Time Domain');
-subplot(2,1,2) ;
-plot(f_y_2, abs(fft_y_2), 'LineWidth',1.5) ;
-grid on;
-xlabel('freq (Hz)');
-ylabel('Amplitude');
-title('Signal in Frequency Domain');
-
+% Plotting signals in time and freq domain
+plot_time_freq(y_1, Fs, 'Signal Multiplied by Carrier', 'Signal Multiplied by Carrier in Time Domain', 'Signal Multiplied by Carrier in Frequency Domain');
+plot_time_freq(y_2, Fs, 'Modulated Audio Signal', 'Modulated Audio Signal in Time Domain', 'Modulated Audio Signal in Frequency Domain');
 
 % Playing the audio
 sound(y_2, Fs);
 pause(length(y_2) * (1/ Fs));
-
 
 %% 2.3.d
 y_3 = filter(Num,1,y_2);
 y_4 = y_3 .* s_n';
 y_5 = filter(Num,1,y_4);
 
-% Constructing the FFT spectrum of the signal
-L_y_5 = length(y_5);
-f_y_5= (Fs/L_y_5) * (-L_y_5/2:L_y_5/2-1);
-fft_y_5 = fftshift(fft(y_5))/L_y_5;
-
-% Plotting signal in time and freq domain
-figure('Name', 'Reconstructed audio signal');
-subplot(2, 1, 1);
-plot(t, y_5, 'LineWidth', 1.5);
-grid on;
-xlabel('Time(Sec)') ;
-ylabel('Amplitude') ;
-title('Signal in Time Domain');
-subplot(2,1,2) ;
-plot(f_y_2, abs(fft_y_5), 'LineWidth',1.5) ;
-grid on;
-xlabel('freq (Hz)');
-ylabel('Amplitude');
-title('Signal in Frequency Domain');
+% Plotting signals in time and freq domain
+plot_time_freq(y_4, Fs, 'Scrmabled Signal Multiplied by Carrier', 'Scrmabled Signal Multiplied by Carrier in Time Domain', 'Scrmabled Signal Multiplied by Carrier in Frequency Domain');
+plot_time_freq(y_5, Fs, 'Descrmabled Audio Signal', 'Descrmabled Audio Signal in Time Domain', 'Descrmabled Audio Signal in Frequency Domain');
 
 % Playing the audio
 sound(y_5, Fs);
@@ -125,3 +64,30 @@ sound(y_5, Fs);
 % Calculating MSE and MAE
 MAE = mean(abs(x - y_5))
 MSE = mean((x - y_5) .^ 2)
+
+
+function plot_time_freq(y, Fs, title1, title2, title3)
+    T = length(y) * (1/ Fs);
+    t = 0: 1/Fs:T-1/Fs;
+    
+
+    % Constructing the FFT spectrum of the signal
+    L_y = length(y);
+    f_y = (Fs/L_y) * (-L_y/2:L_y/2-1);
+    fft_y = fftshift(fft(y))/L_y;
+    
+    % Plotting signal in time and freq domain
+    figure('Name', title1);
+    subplot(2, 1, 1);
+    plot(t, y, 'LineWidth', 1.5);
+    grid on;
+    xlabel('Time(Sec)') ;
+    ylabel('Amplitude') ;
+    title(title2);
+    subplot(2,1,2) ;
+    plot(f_y, abs(fft_y), 'LineWidth',1.5) ;
+    grid on;
+    xlabel('freq (Hz)');
+    ylabel('Amplitude');
+    title(title3);
+end
