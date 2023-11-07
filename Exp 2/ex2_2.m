@@ -100,6 +100,7 @@ plot_time_freq(y_4, Fs, 'Noisy Scrmabled Signal Multiplied by Carrier', 'Noisy S
 plot_time_freq(y_5, Fs, 'Noisy Descrmabled Audio Signal', 'Noisy Descrmabled Audio Signal in Time Domain', 'Noisy Descrmabled Audio Signal in Frequency Domain');
 
 plot_freq_freq(x, y_5, Fs, 'Frequency Spectrums (Channel with noise)', 'Frequency Spectrum Of Original Signal', 'Frequency Spectrum Of Descrambled Signal');
+%%%
 % When the communication channel has noise, a noise floor is added to the 
 % signal which remains after descrambling and is audible in the final result.
 % The noise floor can also be seen in the spectrum of the descrambled signal.
@@ -112,7 +113,100 @@ disp('MAE and MSE for noisy signal:');
 MAE = mean(abs(x - y_5))
 MSE = mean((x - y_5) .^ 2)
 
-%% Plot funcs
+
+%% 2.4.a
+f0    = 100;
+fs    = 500;
+t0 = 0;
+t1 = 2;
+t     = t0 : 1/fs : t1 - 1/fs;
+
+s1   = sin(2 * pi * f0 * t);
+f1    = 400;
+f2    = 200;
+s2   = chirp(t,f1,t1,f2);
+s3   = zeros(1,length(s1));
+s3(500) = 50;
+s     = s1 + s2 + s3;
+
+figure('Name', 'Signals');
+subplot(4,1,1);
+plot(t, s1);
+xlabel('Time(Sec)') ;
+ylabel('Amplitude');
+title('Sine');
+subplot(4,1,2);
+plot(t, s2);
+xlabel('Time(Sec)') ;
+ylabel('Amplitude');
+title('Chirp');
+subplot(4,1,3);
+plot(t, s3);
+xlabel('Time(Sec)') ;
+ylabel('Amplitude');
+title('Delta');
+subplot(4,1,4);
+plot(t, s);
+xlabel('Time(Sec)') ;
+ylabel('Amplitude');
+title('Overall Signal');
+
+
+L_x       = length(s);
+f_x       = (fs/L_x) * (-L_x/2:L_x/2-1);
+fft_x     = fftshift(fft(s))/L_x;
+
+figure();
+plot(f_x, abs(fft_x), 'LineWidth',1.5) ;
+grid on;
+xlabel('freq (Hz)');
+ylabel('Amplitude');
+title('Signal in Frequency Domain');
+
+
+%% 2.4.b
+for window_size=[64, 128, 256, 512]
+    figure('Name', 'Spectrogram of a Chirp Signal');
+    spectrogram( ...
+        s, ...
+        hamming(window_size), ...
+        window_size - 1, ...
+        window_size, ...
+        fs, ...
+        "centered", ...
+        "yaxis" ...
+    );
+    title(sprintf('Spectrogram of a Chirp Signal (window size=%d)', window_size));
+end
+
+figure('Name', 'Spectrogram of a Chirp Signal in 3D');
+spectrogram( ...
+    s, ...
+    hamming(128), ...
+    127, ...
+    128, ...
+    fs, ...
+    "centered", ...
+    "yaxis" ...
+);
+view(-45, 50);
+colormap bone;
+title('Spectrogram of Signal (window size=128)');
+%%%
+% STFT analyzes small chunks of a longer signal, while DFT looks at the entire signal. This allows STFT to provide time-localized frequency information, while DFT only provides overall frequency content.
+% STFT uses a sliding window function to isolate segments of the signal for analysis. DFT does not use a window, it processes the whole signal.
+% STFT provides a 2D representation (time vs. frequency) of the signal. DFT provides only 1D frequency information.
+% 
+% The length of the sliding window in STFT affects the time and frequency resolution:
+%  
+% Shorter window results in better time resolution, worse frequency resolution. The window can isolate shorter segments of the signal, but with less cycles/frequency content.
+%  
+% Longer window results in worse time resolution, better frequency resolution. Longer segments of the signal contain more cycles and provide better frequency information, but precise time localization is lost.
+%  
+% So there is a tradeoff between time and frequency precision based on STFT
+% window length.
+
+%% Plotting functions
 function plot_time_freq(y, Fs, title1, title2, title3)
     T = length(y) * (1/ Fs);
     t = 0: 1/Fs:T-1/Fs;
