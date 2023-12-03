@@ -3,13 +3,12 @@ clear;
 clc;
 
 %%
-% H1:
-b1 = [0.969531, -1.923772, 0.969531];
-a1 = [1, -1.923772, 0.939063];
-
-% H2:
-b2 = [0.996088, -1.976468, 0.996088];
-a2 = [1, -1.976468, 0.992177];
+% H3
+b1 = [0.030469 0 -0.030469];
+a1 = [1 -1.923772 0.939063];
+% H4:
+b2 = [0.003912 0 -0.003912];
+a2 = [1 -1.976468 0.992177];
 
 fs = 400;
 %% 3-2-a
@@ -127,7 +126,7 @@ Nf = 4096;
 [h2, w2] = freqz(b2, a2, Nf);
 
 % Plotting frequency response of H1 and H2
-figure('name', "Notch Filter Responses")
+figure('name', "Peaking Filter Responses")
 plot(w1/pi*fs/2, abs(h1), 'LineWidth', 1.5);
 xlim([0, 20]);
 grid on;
