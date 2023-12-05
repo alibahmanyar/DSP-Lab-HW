@@ -66,31 +66,37 @@ x = [cos(2*pi*f(1)*t1),cos(2*pi*f(2)*t2),cos(2*pi*f(3)*t3)];
 
 % H1:
 figure('Name', 'H1');
+subplot(2,1,1);
 plot(x, "LineWidth", 1.5);
+title("Input signal");
+xlabel("n");
+ylabel("Amplitude");
+grid on;
+
+y1 = filter(b1, a1, x);
+subplot(2,1,2);
+plot(y1, "LineWidth", 1.5);
 title("Filtered Output (H1)");
 xlabel("n");
 ylabel("Amplitude");
 grid on;
-hold on;
-
-y1 = filter(b1, a1, x);
-plot(y1, "LineWidth", 1.5);
-hold off;
-legend('x[tn]', 'y[tn]')
 
 % H2:
 figure('Name', 'H2');
+subplot(2,1,1);
 plot(x, "LineWidth", 1.5);
+title("Input signal");
+xlabel("n");
+ylabel("Amplitude");
+grid on;
+
+y2 = filter(b2, a2, x);
+subplot(2,1,2);
+plot(y2, "LineWidth", 1.5);
 title("Filtered Output (H2)");
 xlabel("n");
 ylabel("Amplitude");
 grid on;
-hold on;
-
-y2 = filter(b2, a2, x);
-plot(y2, "LineWidth", 1.5);
-hold off;
-legend('x[tn]', 'y[tn]')
 
 %% 3.2.d
 N = 300;
