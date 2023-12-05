@@ -172,7 +172,7 @@ for delta_g=peaksH2_value(2:end) - peaksH2_value(1:end-1) % Calculating changes
            end
            continue;
        end
-       if (abs(delta_g) < 0.01) % Assumming that when the peaks value dont fluctuate as much, the output is settled
+       if (abs(delta_g) < 0.01) % Assumming that when the peak values don't fluctuate as much, the output has settled
            xline(peaksH2_index(i),'--',{'Settling Time', peaksH2_index(i) * (1/fs) - sections(current_section)/fs});
            fprintf("H2, Settling amplitude for f=%.0f: %.2f\n", freqs(current_section), y2(peaksH2_index(i)));
            current_section = current_section + 1; % Move on to next section when first settling point is found
