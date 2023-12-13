@@ -143,3 +143,33 @@ title('Approximation Coefficients');
 subplot(2,2,4)
 imagesc(cD);
 title('Diagonal Coefficients');
+
+%% 4.4.1
+close all;
+clear all;
+clc;
+
+img_04 = im2double(imread('./assets/Image04.png'));
+figure('name', 'Original Vs. Blured');
+subplot(1,3,1);
+imshow(img_04);
+title('Original Image');
+
+len = 15;
+theta = 20 * pi / 180;
+kernel = fspecial('motion', len, theta);
+blured = imfilter(img_04, kernel, "conv", "circular");
+subplot(1,3,2);
+imshow(blured);
+title('Blured Image');
+
+
+figure('name', 'motion blur filternig')
+estimated_nsr = [0, 0.001, 0.01, 0.1];
+for i = 1:length(estimated_nsr)
+    fprintf("%f", i)
+    wnr3 = deconvwnr(blured, kernel, estimated_nsr(i));
+    subplot(2,2,i);
+    imshow(wnr3);
+    title(sprintf('Restoration of Blurred, Noisy Image Using Estimated NSR=%.3f',estimated_nsr(i)));
+end
