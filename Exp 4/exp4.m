@@ -118,3 +118,28 @@ title('Salt & Pepper Noise Image');
 subplot(2,2,4)
 imshow(FIR_salt_pepper);
 title('FIR salt & pepper filter');
+
+%% 4.3.1
+
+img_03 = imread('./assets/Image03.jpg');
+figure(1);
+imshow(img_03);
+
+image_size = size(img_03);
+[cA,cH,cV,cD] = dwt2(img_03,'db1','mode','per');
+figure('name', 'wavelet 2D');
+subplot(2,2,1)
+imagesc(cV);
+title('Vertical Detail Coefficients');
+
+subplot(2,2,2)
+imagesc(cH);
+title('Horizontal Detail Coefficients');
+
+subplot(2,2,3)
+imagesc(cA);
+title('Approximation Coefficients');
+
+subplot(2,2,4)
+imagesc(cD);
+title('Diagonal Coefficients');
