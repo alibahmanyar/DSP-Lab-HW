@@ -144,7 +144,7 @@ subplot(2,2,4)
 imagesc(cD);
 title('Diagonal Coefficients');
 
-%% 4.4.1
+%% 4.4.1, 4.4.2
 close all;
 clear all;
 clc;
@@ -167,7 +167,6 @@ title('Blured Image');
 figure('name', 'motion blur filternig')
 estimated_nsr = [0, 0.001, 0.01, 0.1];
 for i = 1:length(estimated_nsr)
-    fprintf("%f", i)
     wnr3 = deconvwnr(blured, kernel, estimated_nsr(i));
     subplot(2,2,i);
     imshow(wnr3);
