@@ -3,7 +3,6 @@ clear all;
 close all;
 %% 4.1.1
 img = imread("./assets/lena.png");
-
 imshow(img)
 
 %% 4.1.2
@@ -143,6 +142,18 @@ title('Approximation Coefficients');
 subplot(2,2,4)
 imagesc(cD);
 title('Diagonal Coefficients');
+
+figure('name', 'Horizontal Lines Highlighted')
+tt = imresize(cH, 2);
+r = tt(:, :, 1);
+g = tt(:, :, 2);
+b = tt(:, :, 3);
+
+tt = cat(3, g, zeros([636, 622]), zeros([636, 622]));
+
+
+imagesc(tt(1:end-1,:,:) + im2double(img_03));
+title('Horizontal Lines Highlighted');
 
 %% 4.4.1, 4.4.2
 close all;
