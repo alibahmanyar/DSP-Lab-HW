@@ -184,10 +184,6 @@ imagesc(tt(1:end-1,:,:) + im2double(img_03));
 title('Horizontal Lines Highlighted');
 
 %% 4.4.1, 4.4.2
-close all;
-clear all;
-clc;
-
 img_04 = im2double(imread('./assets/Image04.png'));
 figure('name', 'Original Vs. Blured');
 subplot(1,2,1);
@@ -225,6 +221,70 @@ for i = 1:length(estimated_nsr)
     subplot(2,2,i);
     imshow(wnr3);
     title(sprintf('Restoration of noisy blurred image, Noisy Image Using Estimated NSR=%.3f',estimated_nsr(i)));
+end
+
+%% 4.5.1:
+img = im2double(imread('./assets/glass.tif'));
+figure('name', 'glass.tif')
+imshow(img);
+title('glass.tif');
+
+%% 4.5.2:
+img_dft = fftshift(fft2(img));
+
+figure('name', 'DFT Magnitude');
+mesh(10 * log10(abs(img_dft)));
+grid on;
+title('DFT Magnitude');
+
+figure('name', 'DFT Phase');
+mesh(angle(img_dft));
+grid on;
+title('DFT Phase');
+
+
+%% 4.5.4:
+output_image = FFT_LP_2D(img, 0.1*pi);
+
+figure('name', 'Original vs Filtered Image');
+subplot(1,2,1);
+imshow(img); 
+title('Original Image');
+subplot(1,2,2);
+imshow(output_image); 
+title('Filtered Image');
+
+%% 4.5.6:
+img_downsamp = imresize(img, 1/4, 'nearest');
+
+figure('name', 'Original vs Downsampled Image');
+subplot(1,3,1);
+imshow(img);
+title('Original Glass');
+subplot(1,3,2)
+imshow(img_downsamp);
+title('1/4 Downsampled Image');
+img_downsamp_filtered = FFT_LP_2D(img_downsamp,0.2*pi);
+subplot(1,3,3)
+imshow(img_downsamp_filtered);
+title('Filtered 1/4 Downsampled Image');
+
+%% 4.5.3:
+function output_image = FFT_LP_2D(input_image, cutoff_frequency)
+    [ix,iy,iz] = size(input_image);
+    hr = (ix-1)/2;
+    hc = (iy-1)/2;
+    [x, y] = meshgrid(-hc:hc, -hr:hr);
+
+    mg = sqrt((x/hc).^2 + (y/hr).^2);
+    lp = double(mg <= cutoff_frequency);
+
+    IM = fftshift(fft2(double(input_image)));
+    IP = zeros(size(IM));
+    for z = 1:iz
+        IP(:,:,z) = IM(:,:,z) .* lp;
+    end
+    output_image = abs(ifft2(ifftshift(IP),'symmetric'));
 end
 
 %% 4.2.9:
